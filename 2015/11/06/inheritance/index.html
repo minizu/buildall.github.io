@@ -167,7 +167,7 @@ console.log(Dog.prototype.__proto__.hasOwnPropety('eat')) // 打印 true
 
 function Human(){}
 Human.prototype = new <span class="keyword">Animal</span>();
-//这行代码可以扯成两行理解，
+//这行代码可以拆成两行理解，
 //var <span class="keyword">animal</span> = new <span class="keyword">Animal</span>; 此时<span class="keyword">animal</span>.__proto__引用自<span class="keyword">Animal</span>.prototype，既<span class="keyword">animal</span>.__proto__.hasOwnPropety('eat')返回true
 //Human.prototype = <span class="keyword">animal</span>; 此时Human.prototype.__proto__.hasOwnPropety('eat')返回true
 //则有 Human.prototype.__proto__.eat(); 打印 I can eat
@@ -184,7 +184,7 @@ Human.prototype = new <span class="keyword">Animal</span>();
 //someone.eat();  I can eat
 //既someone对象继承了<span class="keyword">Animal</span>上的eat方法。
 
-Human.prototype.speak = function(){console.log('I can speak');};    //此时Human.prototype上拥有了speak方法
+Human.prototype.speak = function(){console.log('I can speak');};    //此时Human.prototype这个由<span class="keyword">Animal</span>构造的对象拥有了speak方法
 
 function Coder(){}
 Coder.prototype = new Human();
@@ -201,8 +201,8 @@ var me = new JSer();
 console.log(me)                                                              //打印结果为JSer {}
 console.log(me.__proto__);                                                   //打印结果为Coder {}
 console.log(me.__proto__.__proto__);                                         //打印结果为Human {}
-console.log(me.__proto__.__proto__.__proto__);                               //打印结果为<span class="keyword">Animal</span> {}
-console.log(me.__proto__.__proto__.__proto__.__proto__);                     //打印结果为<span class="keyword">Animal</span> {}
+console.log(me.__proto__.__proto__.__proto__);                               //打印结果为<span class="keyword">Animal</span> {}, 拥有speak方法的<span class="keyword">Animal</span>构造出的对象
+console.log(me.__proto__.__proto__.__proto__.__proto__);                     //打印结果为<span class="keyword">Animal</span> {}, 没有speak方法
 console.log(me.__proto__.__proto__.__proto__.__proto__.__proto__);           //打印结果为Object {}
 console.log(me.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__); //打印结果为null，此时原型链到达尽头
 
