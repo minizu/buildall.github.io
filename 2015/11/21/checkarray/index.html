@@ -11,7 +11,7 @@ length: 1,
 slice: function<span class="function"> (</span><span class="function">)</span> {}
 }<span class="function">)</span>; // false
 </code></pre><p>In somewhere that no ES5 support, just do this:</p>
-<pre><code><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">Array</span>.isArray === <span class="string">'undefined'</span>) {
+<pre><code><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">Array</span>.isArray === <span class="literal">undefined</span>) {
    <span class="built_in">Array</span>.isArray = <span class="function"><span class="keyword">function</span> (<span class="params">arg</span>) </span>{
       <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(arg) === <span class="string">'[object Array]'</span>;
    };
