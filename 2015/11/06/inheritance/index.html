@@ -1,241 +1,41 @@
-<a id="rocket" href="#top" class="show"></a><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><meta content="telephone=no" name="format-detection"/><meta name="description"/><title>用代码说明JavaScript里的继承 | 赵彪的博客</title><!--+get_resource("blog_basic.css")--><link rel="stylesheet" type="text/css" href="/css/normalize.css"/><link rel="stylesheet" type="text/css" href="/css/pure-min.css"/><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css"/><link rel="stylesheet" type="text/css" href="/css/highlight.css"/><link rel="stylesheet" type="text/css" href="/css/style.css"/><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"/><link rel="alternate" type="application/atom+xml" href="/atom.xml"/></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">用代码说明JavaScript里的继承</h1><a id="logo" href="/">赵彪的博客</a><p class="description">把生命浪费在美好的代码上</p></div><div id="nav-menu"><a href="/" class="current">Home</a><a href="/archives">Archive</a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">用代码说明JavaScript里的继承</h1><div class="post-meta">November 06, 2015</div><span data-thread-key="2015/11/06/inheritance/" class="ds-thread-count"></span><div class="post-content"><p>JavaScript是通过prototype来实现继承的。也就是人们常说的”原型继承”。</p>
+<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>用代码说明JavaScript里的继承 | 赵彪的博客</title><link rel="stylesheet" type="text/css" href="/css/normalize.css"><link rel="stylesheet" type="text/css" href="/css/highlight.css"><link rel="stylesheet" type="text/css" href="/css/very-simple.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"></head><body><!-- include the sidebar--><!-- include ./includes/sidebar.jade--><!-- Blog title and subtitle--><header><div class="container header"><a id="logo" href="/." class="title">赵彪的博客</a><span class="subtitle">把生命浪费在美好的代码上</span><label id="toggle-menu" for="menu" onclick><i class="fa fa-bars"></i></label></div></header><!-- use checkbox hack for toggle nav-bar on small screens--><input id="menu" type="checkbox"><!-- Navigation Links--><nav id="nav"><div class="container"><a href="/" class="sidebar-nav-item active">Home</a><a href="/archives" class="sidebar-nav-item">Archives</a></div></nav><div id="header-margin-bar"></div><!-- gallery that comes before the header--><div class="wrapper"><div class="container post-header"><h1>用代码说明JavaScript里的继承</h1></div></div><div class="wrapper"><div class="container meta"><div class="post-time">2015-11-06</div><div class="post-categories"><a class="post-category-link" href="/categories/JavaScript/">JavaScript</a></div><div class="post-tags"><a class="post-tag-link" href="/tags/JS继承/">JS继承</a></div></div></div><article><div class="container post"><p>JavaScript是通过prototype来实现继承的。也就是人们常说的”原型继承”。</p>
 <p>本文的目的就是用代码来说明，到底什么是原型继承。</p>
-<p>##原型是什么##</p>
-<p>JavaScript里有两个“原型”:</p>
-<ol>
-<li>prototype</li>
-<li>__proto__
-</li>
-</ol>
+<h2 id="原型是什么"><a href="#原型是什么" class="headerlink" title="原型是什么"></a>原型是什么</h2><p>JavaScript里有两个“原型”:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>prototype</span><br><span class="line"><span class="number">2.</span>__proto__</span><br></pre></td></tr></table></figure></p>
 <p>prototype，是JavaScript里由关键字”function”定义的对象的一个特有的属性，这个属性本身又是一个对象。可能大多数不熟悉原型概念的人看到这句话会有点晕，OK，让我们打开控制台，敲几行代码感受下吧。打开你的chrome浏览器，按F12或者command+option+i，并选中控制台(console)，输入以下代码(注：控制台中可以按ctrl+enter来换行):</p>
-<pre><code>var IamFunction = function(){};//定义一个函数
-console.log(IamFunction.prototype);//打印结果为IamFunction {}
-
-var IamObject = {};//定义一个对象
-console.log(IamObject.prototype);//打印结果为undefined
-
-var IamNumber = 0;//定义一个数字
-console.log(IamNumber.prototype);//打印结果为undefined
-
-var IamString = &apos;&apos;;//定义一个字符串
-console.log(IamString.prototype);//打印结果为undefined
-
-var IamArray = [];//定义一个数组
-console.log(IamArray.prototype);//打印结果为undefined
-</code></pre><p>由上面的代码可以看出，所谓prototype这个东西，只存在于某个function。(这里并没有检查JavaScript中所有的数据类型上prototype属性，但结果是一样的，你可以自己试一下，只有function类型会有prototype属性。)在上面的例子中，打印结果”IamFunction {}”就表示，prototype就是IamFunction的一个属性，它的默认值是{}。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> IamFunction = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;<span class="comment">//定义一个函数</span></span><br><span class="line"><span class="built_in">console</span>.log(IamFunction.prototype);<span class="comment">//打印结果为IamFunction &#123;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> IamObject = &#123;&#125;;<span class="comment">//定义一个对象</span></span><br><span class="line"><span class="built_in">console</span>.log(IamObject.prototype);<span class="comment">//打印结果为undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> IamNumber = <span class="number">0</span>;<span class="comment">//定义一个数字</span></span><br><span class="line"><span class="built_in">console</span>.log(IamNumber.prototype);<span class="comment">//打印结果为undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> IamString = <span class="string">''</span>;<span class="comment">//定义一个字符串</span></span><br><span class="line"><span class="built_in">console</span>.log(IamString.prototype);<span class="comment">//打印结果为undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> IamArray = [];<span class="comment">//定义一个数组</span></span><br><span class="line"><span class="built_in">console</span>.log(IamArray.prototype);<span class="comment">//打印结果为undefined</span></span><br></pre></td></tr></table></figure>
+<p>由上面的代码可以看出，所谓prototype这个东西，只存在于某个function。(这里并没有检查JavaScript中所有的数据类型上prototype属性，但结果是一样的，你可以自己试一下，只有function类型会有prototype属性。)在上面的例子中，打印结果”IamFunction {}”就表示，prototype就是IamFunction的一个属性，它的默认值是{}。</p>
 <p>除了Function构造的对象上prototype属性，JavaScript里还有一个地方有“原型”，既由构造函数创建的对象的__proto__属性。关于这个__proto__属性，请看下面的内容吧。</p>
-<p>##函数的调用方式##</p>
-<p>JS里的函数有两种调用方法:普通调用和作为构造函数调用。既：</p>
-<pre><code>function Func(){}      //定义一个函数Func
-Func();                //普通调用， 没有关键字new
-var obj = new Func();  //当作构造函数调用，有关键字new
-</code></pre><p>可以看到两种调用方法字面上的差异是有无关键字new。下面看看两种调用方式的具体区别。</p>
+<h2 id="函数的调用方式"><a href="#函数的调用方式" class="headerlink" title="函数的调用方式"></a>函数的调用方式</h2><p>JS里的函数有两种调用方法:普通调用和作为构造函数调用。既：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Func</span>(<span class="params"></span>)</span>&#123;&#125;      <span class="comment">//定义一个函数Func</span></span><br><span class="line">Func();                <span class="comment">//普通调用， 没有关键字new</span></span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> Func();  <span class="comment">//当作构造函数调用，有关键字new</span></span><br></pre></td></tr></table></figure>
+<p>可以看到两种调用方法字面上的差异是有无关键字new。下面看看两种调用方式的具体区别。</p>
 <p>首先我们定义一个函数Animal。</p>
-<pre><code>//定义函数Animal
-function Animal(animalName){
-   console.log(&apos;function is called&apos;);
-
-   console.log(this);
-   console.log(this.eat);
-   this.name = animalName;
-   console.log(this.name);
-
-   console.log(&apos;function is going to return&apos;);
-}
-</code></pre><p>像上文说的，所有的function变量都有prototype属性，所以我们可以这样给prototype属性添加方法：</p>
-<pre><code>//给函数Animal的prototype属性添加eat方法
-Animal.prototype.eat = function(){
-   console.log(&apos;eating&apos;);
-};
-</code></pre><p>先来看普通调用的情况:</p>
-<pre><code>//以下是A行
-var dog = Animal(&apos;dog&apos;);  //调用函数Animal，未使用new  ******* A ******
-                          //上面这行代码的意思可以理解为：调用Animal函数，并把返回值赋给变量dog;
-
-
-console.log(dog);         //打印结果为undefined
-/*******
-* 对于上面这行打印结果的解释:变量dog的值为undefined是因为函数Animal的定义的最后并没有写上return，既函数本身没有任何返回值，既undefined
-******/
-
-console.log(window.name); //打印结果为dog。对于这个打印的解释请往下看。
-</code></pre><p>让我们看看在上面A行调用过程中，到底发生了什么。</p>
-<pre><code>function Animal(animalName){
-
-   console.log(&apos;function is called&apos;);
-
-   console.log(this);  //打印结果为Window {external: Object, chrome: Object, document: document, dog: undefined, speechSynthesis: SpeechSynthesis…}
-   /******
-   *  对于以上面这行打印结果的解释： 这里打印的是对象window。window对象是由浏览器用类似下面的代码自动创建的
-   *  var window = new Window();
-   *
-   *  因为A行是直接在全局作用域调、既window对象上调用了Animal(&apos;dog&apos;)，所以this引用的是window对象。
-   *
-   *  既JavaScript内部执行了类似这样的代码:
-   *  this = window;
-   *
-   ******/
-
-   console.log(this.eat);   //打印结果为undefined。这是由于this引用了window，而window本身并没有eat方法。
-
-   this.name = animalName;
-   console.log(this.name);  //打印结果为dog。因为上面一行将函数参数animalName的值，也就是&apos;dog&apos;赋给this.name，所以这里打印出&apos;dog&apos;。
-                            //再次注意这里的this已经引用了对象window，所以给this添加name属性既给window添加了name属性。
-
-   console.log(&apos;function is going to return&apos;);
-   // 函数体的最后并没有显性的写上return;
-}
-</code></pre><p>再看看使用new关键字调用Animal时会发生什么：</p>
-<pre><code>//以下是B行
-var dog = new Animal(&apos;dog&apos;); //在Animal的调用前使用了关键字new，则此时Animal函数成为了构造函数。  ********* B *********
-
-console.log(dog);            //打印结果为 Animal {name: &quot;dog&quot;}
-console.log(window.name)     //打印结果为undefined;
-</code></pre><p>B行在函数Animal的调用Animal()前加上了关键字new，像这样在函数调用前加上new，此时函数就被当作构造函数使用了。这里的”构造”过程如下:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//定义函数Animal</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">animalName</span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'function is called'</span>);</span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>.eat);</span><br><span class="line">   <span class="keyword">this</span>.name = animalName;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'function is going to return'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>像上文说的，所有的function变量都有prototype属性，所以我们可以这样给prototype属性添加方法：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//给函数Animal的prototype属性添加eat方法</span></span><br><span class="line">Animal.prototype.eat = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'eating'</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>先来看普通调用的情况:<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//以下是A行</span></span><br><span class="line"><span class="keyword">var</span> dog = Animal(<span class="string">'dog'</span>);  <span class="comment">//调用函数Animal，未使用new  ******* A ******</span></span><br><span class="line">                          <span class="comment">//上面这行代码的意思可以理解为：调用Animal函数，并把返回值赋给变量dog;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(dog);         <span class="comment">//打印结果为undefined</span></span><br><span class="line"><span class="comment">/*******</span><br><span class="line">* 对于上面这行打印结果的解释:变量dog的值为undefined是因为函数Animal的定义的最后并没有写上return，既函数本身没有任何返回值，既undefined</span><br><span class="line">******/</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name); <span class="comment">//打印结果为dog。对于这个打印的解释请往下看。</span></span><br></pre></td></tr></table></figure></p>
+<p>让我们看看在上面A行调用过程中，到底发生了什么。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">animalName</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'function is called'</span>);</span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>);  <span class="comment">//打印结果为Window &#123;external: Object, chrome: Object, document: document, dog: undefined, speechSynthesis: SpeechSynthesis…&#125;</span></span><br><span class="line">   <span class="comment">/******</span><br><span class="line">   *  对于以上面这行打印结果的解释： 这里打印的是对象window。window对象是由浏览器用类似下面的代码自动创建的</span><br><span class="line">   *  var window = new Window();</span><br><span class="line">   *</span><br><span class="line">   *  因为A行是直接在全局作用域调、既window对象上调用了Animal('dog')，所以this引用的是window对象。</span><br><span class="line">   *</span><br><span class="line">   *  既JavaScript内部执行了类似这样的代码:</span><br><span class="line">   *  this = window;</span><br><span class="line">   *</span><br><span class="line">   ******/</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>.eat);   <span class="comment">//打印结果为undefined。这是由于this引用了window，而window本身并没有eat方法。</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">this</span>.name = animalName;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);  <span class="comment">//打印结果为dog。因为上面一行将函数参数animalName的值，也就是'dog'赋给this.name，所以这里打印出'dog'。</span></span><br><span class="line">                            <span class="comment">//再次注意这里的this已经引用了对象window，所以给this添加name属性既给window添加了name属性。</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'function is going to return'</span>);</span><br><span class="line">   <span class="comment">// 函数体的最后并没有显性的写上return;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再看看使用new关键字调用Animal时会发生什么：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//以下是B行</span></span><br><span class="line"><span class="keyword">var</span> dog = <span class="keyword">new</span> Animal(<span class="string">'dog'</span>); <span class="comment">//在Animal的调用前使用了关键字new，则此时Animal函数成为了构造函数。  ********* B *********</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(dog);            <span class="comment">//打印结果为 Animal &#123;name: "dog"&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)     <span class="comment">//打印结果为undefined;</span></span><br></pre></td></tr></table></figure>
+<p>B行在函数Animal的调用Animal()前加上了关键字new，像这样在函数调用前加上new，此时函数就被当作构造函数使用了。这里的”构造”过程如下:</p>
 <p>1.在JavaScript内部，new会创建一个对象{}。你可以想象成JavaScript内部执行了这样一行代码:</p>
-<pre><code>var newObject = {};
-</code></pre><p>2.这个对象的__proto__属性随即引用了Animal的prototype属性。你可以想像成JavaScript内部执行了这样的代码:</p>
-<pre><code>Object.setPrototypeOf(newObject, Animal.prototype);  //设置newObject的__proto__属性
-
-// 上面一行也可以写成newObject.__proto__ = Animal.prototype。
-// __proto__是JavaScript对象里特有的属性，它引用构造函数的prototype属性。
-// 你可以这样访问__proto__属性，Object.getPrototypeOf(newObject)，或者newObject.__proto__;
-</code></pre><p>3.随即发生了类似这样的操作:</p>
-<pre><code>Animal.call(newObject, &apos;dog&apos;); //这里相当于使用了函数的call方法改变了函数内部this的指向。
-</code></pre><p>4.最后，这个由new创建的对象会被函数返回，既</p>
-<pre><code>function Animal(&apos;dog&apos;){
-
-  newObject.name = &apos;dog&apos;;
-  return newObject;        //相当于JavaScript内部自动给我们的函数定义添加了一句return this;注意，只有当有new关键字出现时，才会自动添加这句。
-
-}
-</code></pre><p>完整的看一下B行调用Animal的过程中，发生了什么：</p>
-<pre><code>function Animal(animalName){
-
-   console.log(&apos;function is called&apos;);
-
-   console.log(this);  //打印结果为 &gt; Animal {}
-   /******
-   * 调用对象被new关键字设置为了newObject，所以这里打印的是{}, 前面的&quot;Animal&quot; 是告诉你这个{}的构造函数为Animal
-   * 而由于作用域中有 this.name = animalName这行代码，所以如果你点击该行打印结果前面的箭头展开这个对象，你会看到这个{}已经具备了name属性。关于作用域，这里就不展开说了。
-   ******/
-
-   console.log(this.eat);   //打印结果为function(){console.log(&apos;eating&apos;)}
-   /*****
-   * 上文中的构造过程第2步中已经说明newObject的__proto__属性引用了Animal.prototype属性。
-   * 这里的eat方法正是来自于__proto__属性。而JavaScript中规定，只要是__proto__上的属性，都可以省略__proto__，直接通过newObject.eat来访问。
-   ***/
-
-   this.name = animalName;
-   console.log(this.name);  //打印结果为dog。
-
-
-   console.log(&apos;function is going to return&apos;);
-   // 函数体的最后并没有显性的写上return;
-   // 但是由于用new关键字调用了函数Animal，所以这里相当于执行了 return this;
-}
-</code></pre><p>##典型的继承写法##</p>
-<p>先总结一下上文出现的概念:</p>
-<ol>
-<li><p>JavaScript里的函数都有prototype属性。</p>
-</li>
-<li><p>对象都有__proto__属性。</p>
-</li>
-<li><p>对象的__proto__属性引用创建其的构造函数的prototype属性。</p>
-</li>
-</ol>
-<p>如果理解了上面的这三条概念，那么就不难理解继承了。我们来看JavaScript里典型的继承写法:</p>
-<pre><code>function Animal(animalName){        //定义函数Animal
-   this.name = animalName;
-}
-
-
-Animal.prototype.eat = function(){  //给Animal的prototype属性添加eat方法
-   console.log(&apos;eating&apos;);
-}
-
-
-function Dog(){}                    //定义函数Dog
-Dog.prototype = new Animal(&apos;dog&apos;);  //将函数Dog的prototype属性引用为函数Animal&quot;构造&quot;的对象，这步是重点，继承在这里发生了。
-
-console.log(Dog.prototype);         //打印结果为 Animal {name:&apos;dog&apos;}
-console.log(Dog.prototype.name);    //打印结果为&apos;dog&apos;
-console.log(Dog.prototype.eat());   //打印结果为&apos;eating&apos;
-
-console.log(Dog.prototype.hasOwnPropety(&apos;name&apos;))          // 打印 true
-console.log(Dog.prototype.hasOwnPropety(&apos;eat&apos;))           // 打印 false。上面虽然调用eat方法成功了，但是令人意外的是Dog.prototype本身并没有eat方法。
-console.log(Dog.prototype.__proto__.hasOwnPropety(&apos;eat&apos;)) // 打印 true
-</code></pre><p>##原型链##</p>
-<pre><code>function Animal(){}
-Animal.prototype.eat = function(){console.log(&apos;I can eat&apos;);};       //给Animal的原型添加eat方法
-
-function Human(){}
-Human.prototype = new Animal();
-//这行代码可以拆成两行理解，
-//var animal = new Animal; 此时animal.__proto__引用自Animal.prototype，既animal.__proto__.hasOwnPropety(&apos;eat&apos;)返回true
-//Human.prototype = animal; 此时Human.prototype.__proto__.hasOwnPropety(&apos;eat&apos;)返回true
-//则有 Human.prototype.__proto__.eat(); 打印 I can eat
-//而JS中可以省略__proto__直接用&quot;.&quot;去访问__proto__上的属性，所以这时候可以像这样调用eat方法：
-//Human.prototype.eat(); 打印 I can eat
-
-//所以应该可以理解下面的代码了:
-//var someone = new Human();
-//上面的new构造过程包括了这样的操作: someone.__proto__ = Human.prototype;
-//既someone.__proto__ = animal;
-//则有:
-//someone.__proto__.__proto__.eat(); 打印 I can eat。
-//省略__proto__后
-//someone.eat();  I can eat
-//既someone对象继承了Animal上的eat方法。
-
-Human.prototype.speak = function(){console.log(&apos;I can speak&apos;);};    //此时Human.prototype这个由Animal构造的对象拥有了speak方法
-
-function Coder(){}
-Coder.prototype = new Human();
-Coder.prototype.coding = function(){console.log(&apos;I can coding&apos;);};
-
-function JSer(){}
-JSer.prototype = new Coder();
-JSer.prototype.codingInJS = function(){console.log(&apos;I can conding in JS&apos;);};
-
-
-var me = new JSer();
-
-//原型链来了：
-console.log(me)                                                              //打印结果为JSer {}
-console.log(me.__proto__);                                                   //打印结果为Coder {}
-console.log(me.__proto__.__proto__);                                         //打印结果为Human {}
-console.log(me.__proto__.__proto__.__proto__);                               //打印结果为Animal {}, 拥有speak方法的Animal构造出的对象
-console.log(me.__proto__.__proto__.__proto__.__proto__);                     //打印结果为Animal {}, 没有speak方法
-console.log(me.__proto__.__proto__.__proto__.__proto__.__proto__);           //打印结果为Object {}
-console.log(me.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__); //打印结果为null，此时原型链到达尽头
-
-//以下调用均省略了__proto__属性
-console.log(me.eat());                                              //打印I can eat 。eat继承自构造函数Animal
-console.log(me.speak());                                            //打印I can speak。speak方法继承自构造函数Human
-console.log(me.coding());                                           //打印I can coding。 coding方法继承自构造函数Coder
-console.log(me.codingInJS());                                       //打印I can coding in JS。 codingInJS方法继承自构造函数JSer
-</code></pre><p>##总结##</p>
-<ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> newObject = &#123;&#125;;</span><br></pre></td></tr></table></figure>
+<p>2.这个对象的__proto__属性随即引用了Animal的prototype属性。你可以想像成JavaScript内部执行了这样的代码:<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.setPrototypeOf(newObject, Animal.prototype);  <span class="comment">//设置newObject的__proto__属性</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 上面一行也可以写成newObject.__proto__ = Animal.prototype。</span></span><br><span class="line"><span class="comment">// __proto__是JavaScript对象里特有的属性，它引用构造函数的prototype属性。</span></span><br><span class="line"><span class="comment">// 你可以这样访问__proto__属性，Object.getPrototypeOf(newObject)，或者newObject.__proto__;</span></span><br></pre></td></tr></table></figure></p>
+<p>3.随即发生了类似这样的操作:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">Animal.call(newObject, <span class="string">'dog'</span>); <span class="comment">//这里相当于使用了函数的call方法改变了函数内部this的指向。</span></span><br></pre></td></tr></table></figure>
+<p>4.最后，这个由new创建的对象会被函数返回，既<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">'dog'</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  newObject.name = <span class="string">'dog'</span>;</span><br><span class="line">  <span class="keyword">return</span> newObject;        <span class="comment">//相当于JavaScript内部自动给我们的函数定义添加了一句return this;注意，只有当有new关键字出现时，才会自动添加这句。</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>完整的看一下B行调用Animal的过程中，发生了什么：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">animalName</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'function is called'</span>);</span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>);  <span class="comment">//打印结果为 &gt; Animal &#123;&#125;</span></span><br><span class="line">   <span class="comment">/******</span><br><span class="line">   * 调用对象被new关键字设置为了newObject，所以这里打印的是&#123;&#125;, 前面的"Animal" 是告诉你这个&#123;&#125;的构造函数为Animal</span><br><span class="line">   * 而由于作用域中有 this.name = animalName这行代码，所以如果你点击该行打印结果前面的箭头展开这个对象，你会看到这个&#123;&#125;已经具备了name属性。关于作用域，这里就不展开说了。</span><br><span class="line">   ******/</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>.eat);   <span class="comment">//打印结果为function()&#123;console.log('eating')&#125;</span></span><br><span class="line">   <span class="comment">/*****</span><br><span class="line">   * 上文中的构造过程第2步中已经说明newObject的__proto__属性引用了Animal.prototype属性。</span><br><span class="line">   * 这里的eat方法正是来自于__proto__属性。而JavaScript中规定，只要是__proto__上的属性，都可以省略__proto__，直接通过newObject.eat来访问。</span><br><span class="line">   ***/</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">this</span>.name = animalName;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);  <span class="comment">//打印结果为dog。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'function is going to return'</span>);</span><br><span class="line">   <span class="comment">// 函数体的最后并没有显性的写上return;</span></span><br><span class="line">   <span class="comment">// 但是由于用new关键字调用了函数Animal，所以这里相当于执行了 return this;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="典型的继承写法"><a href="#典型的继承写法" class="headerlink" title="典型的继承写法"></a>典型的继承写法</h2><p>先总结一下上文出现的概念:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>JavaScript里的函数都有prototype属性。</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>对象都有__proto__属性。</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span>对象的__proto__属性引用创建其的构造函数的prototype属性。</span><br></pre></td></tr></table></figure>
+<p>如果理解了上面的这三条概念，那么就不难理解继承了。我们来看JavaScript里典型的继承写法:<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">animalName</span>)</span>&#123;        <span class="comment">//定义函数Animal</span></span><br><span class="line">   <span class="keyword">this</span>.name = animalName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Animal.prototype.eat = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;  <span class="comment">//给Animal的prototype属性添加eat方法</span></span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'eating'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dog</span>(<span class="params"></span>)</span>&#123;&#125;                    <span class="comment">//定义函数Dog</span></span><br><span class="line">Dog.prototype = <span class="keyword">new</span> Animal(<span class="string">'dog'</span>);  <span class="comment">//将函数Dog的prototype属性引用为函数Animal"构造"的对象，这步是重点，继承在这里发生了。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(Dog.prototype);         <span class="comment">//打印结果为 Animal &#123;name:'dog'&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(Dog.prototype.name);    <span class="comment">//打印结果为'dog'</span></span><br><span class="line"><span class="built_in">console</span>.log(Dog.prototype.eat());   <span class="comment">//打印结果为'eating'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(Dog.prototype.hasOwnPropety(<span class="string">'name'</span>))          <span class="comment">// 打印 true</span></span><br><span class="line"><span class="built_in">console</span>.log(Dog.prototype.hasOwnPropety(<span class="string">'eat'</span>))           <span class="comment">// 打印 false。上面虽然调用eat方法成功了，但是令人意外的是Dog.prototype本身并没有eat方法。</span></span><br><span class="line"><span class="built_in">console</span>.log(Dog.prototype.__proto__.hasOwnPropety(<span class="string">'eat'</span>)) <span class="comment">// 打印 true</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Animal.prototype.eat = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="string">'I can eat'</span>);&#125;;       <span class="comment">//给Animal的原型添加eat方法</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Human</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Human.prototype = <span class="keyword">new</span> Animal();</span><br><span class="line"><span class="comment">//这行代码可以拆成两行理解，</span></span><br><span class="line"><span class="comment">//var animal = new Animal; 此时animal.__proto__引用自Animal.prototype，既animal.__proto__.hasOwnPropety('eat')返回true</span></span><br><span class="line"><span class="comment">//Human.prototype = animal; 此时Human.prototype.__proto__.hasOwnPropety('eat')返回true</span></span><br><span class="line"><span class="comment">//则有 Human.prototype.__proto__.eat(); 打印 I can eat</span></span><br><span class="line"><span class="comment">//而JS中可以省略__proto__直接用"."去访问__proto__上的属性，所以这时候可以像这样调用eat方法：</span></span><br><span class="line"><span class="comment">//Human.prototype.eat(); 打印 I can eat</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//所以应该可以理解下面的代码了:</span></span><br><span class="line"><span class="comment">//var someone = new Human();</span></span><br><span class="line"><span class="comment">//上面的new构造过程包括了这样的操作: someone.__proto__ = Human.prototype;</span></span><br><span class="line"><span class="comment">//既someone.__proto__ = animal;</span></span><br><span class="line"><span class="comment">//则有:</span></span><br><span class="line"><span class="comment">//someone.__proto__.__proto__.eat(); 打印 I can eat。</span></span><br><span class="line"><span class="comment">//省略__proto__后</span></span><br><span class="line"><span class="comment">//someone.eat();  I can eat</span></span><br><span class="line"><span class="comment">//既someone对象继承了Animal上的eat方法。</span></span><br><span class="line"></span><br><span class="line">Human.prototype.speak = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="string">'I can speak'</span>);&#125;;    <span class="comment">//此时Human.prototype这个由Animal构造的对象拥有了speak方法</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Coder</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Coder.prototype = <span class="keyword">new</span> Human();</span><br><span class="line">Coder.prototype.coding = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="string">'I can coding'</span>);&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">JSer</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">JSer.prototype = <span class="keyword">new</span> Coder();</span><br><span class="line">JSer.prototype.codingInJS = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="string">'I can conding in JS'</span>);&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> me = <span class="keyword">new</span> JSer();</span><br><span class="line"></span><br><span class="line"><span class="comment">//原型链来了：</span></span><br><span class="line"><span class="built_in">console</span>.log(me)                                                              <span class="comment">//打印结果为JSer &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(me.__proto__);                                                   <span class="comment">//打印结果为Coder &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(me.__proto__.__proto__);                                         <span class="comment">//打印结果为Human &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(me.__proto__.__proto__.__proto__);                               <span class="comment">//打印结果为Animal &#123;&#125;, 拥有speak方法的Animal构造出的对象</span></span><br><span class="line"><span class="built_in">console</span>.log(me.__proto__.__proto__.__proto__.__proto__);                     <span class="comment">//打印结果为Animal &#123;&#125;, 没有speak方法</span></span><br><span class="line"><span class="built_in">console</span>.log(me.__proto__.__proto__.__proto__.__proto__.__proto__);           <span class="comment">//打印结果为Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(me.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__); <span class="comment">//打印结果为null，此时原型链到达尽头</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//以下调用均省略了__proto__属性</span></span><br><span class="line"><span class="built_in">console</span>.log(me.eat());                                              <span class="comment">//打印I can eat 。eat继承自构造函数Animal</span></span><br><span class="line"><span class="built_in">console</span>.log(me.speak());                                            <span class="comment">//打印I can speak。speak方法继承自构造函数Human</span></span><br><span class="line"><span class="built_in">console</span>.log(me.coding());                                           <span class="comment">//打印I can coding。 coding方法继承自构造函数Coder</span></span><br><span class="line"><span class="built_in">console</span>.log(me.codingInJS());                                       <span class="comment">//打印I can coding in JS。 codingInJS方法继承自构造函数JSer</span></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>JavaScript通过设置构造函数的prototype对象，从而决定了通过new构造出来的对象的__proto__属性。</li>
 <li>因为每个对象都具备__proto__属性，从而实现了一条原型链。</li>
 <li>又因为JavaScript可以省略__proto__去调用__proto__属性上的方法，所以我们就可以轻松的访问整条原型链上的属性了。</li>
 </ol>
 <p><em>赵彪原创，转载请注明出处</em></p>
-</div><div class="tags"><a href="/tags/JS继承/">JS继承</a></div><div class="categories">Categorized in<a href="/categories/JavaScript/">JavaScript</a></div><div class="page-navigator"><a href="/2015/11/16/basesass/" class="pre">Previous</a><a href="/2015/10/23/手动给你的GitHub项目设置一个主页/" class="next">Next</a></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><div class="widget-title">Categories</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a></li></ul></div><div class="widget"><div class="widget-title">Tags</div><div class="tagcloud"><a href="/tags/sass/" style="font-size: 15px;">sass</a> <a href="/tags/GitHub/" style="font-size: 15px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/requirejs/" style="font-size: 15px;">requirejs</a> <a href="/tags/JavaScript代码规范-JS代码规范-前端代码规范-js代码规范/" style="font-size: 15px;">JavaScript代码规范 JS代码规范 前端代码规范 js代码规范</a> <a href="/tags/JS继承/" style="font-size: 15px;">JS继承</a> <a href="/tags/vim-front-end-tool/" style="font-size: 15px;">vim, front-end tool</a></div></div><div class="widget"><div class="widget-title">Recent</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/08/12/js-standard/">用standard来管理JavaScript代码规范</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/scopeandclosure/">作用域和闭包--读《你不知道的JavaScript》</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/frontendvim/">现在开始用vim开发Web前端吧</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/requirebasic/">快速上手require.js</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/21/checkarray/">How to Check If it is Array?</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/16/basesass/">用于生成基础样式的base.sass文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/inheritance/">用代码说明JavaScript里的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/23/手动给你的GitHub项目设置一个主页/">手动给你的GitHub项目设置一个主页</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/22/oldBlog/">旧博客地址</a></li></ul></div><div class="widget"></div></div></div></div><script src="/js/highlight.pack.js" type="text/javascript"></script><script>hljs.initHighlightingOnLoad();
-</script><div id="footer">© <a href="/" real="nofollow">赵彪的博客. </a>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io">Hexo.</a>Theme by<a rel="nofollow" target="_blank" href="https://chopstack.com">Cho</a></div></div></body><script src="/js/jquery.min.js" type="text/javascript"></script>
-<script src="/js/totop.js" type="text/javascript"></script><script src="/js/fancybox.pack.js" type="text/javascript"></script><link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css"><script>$(document).ready(function() {
-  $("img").wrap(function() {
-    if ($(this).hasClass('nofancybox')) return;
-    return '<a href="' + $(this).attr("src") + '" rel="group" />'});
-});</script><script>$(document).ready(function() {
-  $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif']").attr('rel', 'gallery').fancybox({
-   helpers : {
-   title: { type: 'inside'}
-   },
-   afterLoad: function(){
-   this.title = this.title + ' ' + $(this.element).find('img').attr('alt');
-   }
- });
+</div><!-- comment system--><div class="container"><hr></div></article><footer id="footer"><div class="container"><div class="bar"><div class="social"><a href="/atom.xml" target="_blank"><i class="fa fa-rss"></i></a></div><div class="footer">© 2017 <a href="/" rel="nofollow">Zhao Biao</a>. Powered by <a rel="nofollow" target="_blank" href="https://hexo.io">Hexo</a>. Theme <a target="_blank" href="https://github.com/lotabout/very-simple">very-simple</a>.</div></div></div></footer><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.css"><script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script><script src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script><script>$(document).ready(function() {
+    $(".fancybox").fancybox();
 });
-</script></html>
+</script></body></html>

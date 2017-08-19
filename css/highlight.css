@@ -1,154 +1,164 @@
-/*
+.clearfix::after, article .highlight figcaption::after {
+  content: "";
+  display: table;
+  clear: both; }
 
-Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-license.org/
+.code-block, article pre, article .highlight {
+  background: #2d2d2d;
+  margin: 2ex 0;
+  padding: 1rem 1em;
+  border-style: solid;
+  border-color: #333;
+  border: 1px 0;
+  border-radius: 2px;
+  overflow: auto;
+  color: #cccccc;
+  font-size: 16px;
+  line-height: 1.6em; }
 
-*/
+.line-numbers, article .highlight .gutter pre, article .gist-not-used .gist-file .gist-data .line-numbers {
+  color: #666;
+  font-size: 16px; }
 
-.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 0.5em;
-  background: #23241f;
-  -webkit-text-size-adjust: none;
-}
+article pre, article code {
+  font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace; }
 
-.hljs,
-.hljs-tag,
-.css .hljs-rule,
-.css .hljs-value,
-.aspectj .hljs-function,
-.css .hljs-function
-.hljs-preprocessor,
-.hljs-pragma {
-  color: #f8f8f2;
-}
+article code {
+  background: white;
+  text-shadow: 0 1px #fff;
+  padding: 0 0.3rem; }
 
-.hljs-strongemphasis,
-.hljs-strong,
-.hljs-emphasis {
-  color: #a8a8a2;
-}
+article pre code {
+  background: none;
+  text-shadow: none;
+  padding: 0; }
 
-.hljs-bullet,
-.hljs-blockquote,
-.hljs-horizontal_rule,
-.hljs-number,
-.hljs-regexp,
-.alias .hljs-keyword,
-.hljs-literal,
-.hljs-hexcolor {
-  color: #ae81ff;
-}
+article .highlight pre {
+  border: none;
+  margin: 0;
+  padding: 0; }
 
-.hljs-tag .hljs-value,
-.hljs-code,
-.hljs-title,
-.css .hljs-class,
-.hljs-class .hljs-title:last-child {
-  color: #a6e22e;
-}
+article .highlight table {
+  margin: 0;
+  width: auto; }
 
-.hljs-link_url {
-  font-size: 80%;
-}
+article .highlight td {
+  border: none;
+  padding: 0; }
 
-.hljs-strong,
-.hljs-strongemphasis {
-  font-weight: bold;
-}
+article .highlight figcaption {
+  font-size: 0.85em;
+  color: #999999;
+  line-height: 1em;
+  margin-bottom: 1em; }
 
-.hljs-emphasis,
-.hljs-strongemphasis,
-.hljs-class .hljs-title:last-child,
-.hljs-typename {
-  font-style: italic;
-}
+article .highlight a {
+  color: #66cccc !important;
+  text-decoration: none;
+  float: right; }
+  article .highlight a:hover {
+    color: #6699cc !important; }
 
-.hljs-keyword,
-.ruby .hljs-class .hljs-keyword:first-child,
-.ruby .hljs-function .hljs-keyword,
-.hljs-function,
-.hljs-change,
-.hljs-winutils,
-.hljs-flow,
-.nginx .hljs-title,
-.tex .hljs-special,
-.hljs-header,
-.hljs-attribute,
-.hljs-symbol,
-.hljs-symbol .hljs-string,
-.hljs-tag .hljs-title,
-.hljs-value,
-.alias .hljs-keyword:first-child,
-.css .hljs-tag,
-.css .unit,
-.css .hljs-important {
-  color: #f92672;
-}
+article .highlight .gutter pre {
+  text-align: right;
+  padding-right: 20px; }
 
-.hljs-function .hljs-keyword,
-.hljs-class .hljs-keyword:first-child,
-.hljs-aspect .hljs-keyword:first-child,
-.hljs-constant,
-.hljs-typename,
-.hljs-name,
-.css .hljs-attribute {
-  color: #66d9ef;
-}
+article .highlight .line {
+  height: 1.6em; }
 
-.hljs-variable,
-.hljs-params,
-.hljs-class .hljs-title,
-.hljs-aspect .hljs-title {
-  color: #f8f8f2;
-}
+article .gist-not-used {
+  margin: 0;
+  border-style: solid;
+  border-color: #CCC;
+  border-width: 1px 0;
+  background: #2d2d2d;
+  padding: 1em 1em 1em 2px; }
+  article .gist-not-used .gist-file {
+    border: none;
+    font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
+    margin: 0; }
+    article .gist-not-used .gist-file .gist-data {
+      background: none;
+      border: none; }
+      article .gist-not-used .gist-file .gist-data .highlight .gutter pre, article .highlight .gutter .gist-not-used .gist-file .gist-data pre, article .gist-not-used .gist-file .gist-data .line-numbers {
+        background: none;
+        border: none;
+        padding: 0 20px 0 0; }
+      article .gist-not-used .gist-file .gist-data .line-data {
+        padding: 0 !important; }
+    article .gist-not-used .gist-file .highlight {
+      margin: 0;
+      padding: 0;
+      border: none; }
+    article .gist-not-used .gist-file .gist-meta {
+      background: #2d2d2d;
+      color: #999999;
+      font: 0.85em "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-shadow: 0 0;
+      padding: 0;
+      margin-top: 1em;
+      margin-left: 1em; }
+    article .gist-not-used .gist-file a {
+      color: blue;
+      font-weight: normal; }
+      article .gist-not-used .gist-file a:hover {
+        text-decoration: underline; }
 
-.hljs-string,
-.css .hljs-id,
-.hljs-subst,
-.hljs-type,
-.ruby .hljs-class .hljs-parent,
-.hljs-built_in,
-.django .hljs-template_tag,
-.django .hljs-variable,
-.smalltalk .hljs-class,
-.django .hljs-filter .hljs-argument,
-.smalltalk .hljs-localvars,
-.smalltalk .hljs-array,
-.hljs-attr_selector,
-.hljs-pseudo,
-.hljs-addition,
-.hljs-stream,
-.hljs-envvar,
-.apache .hljs-tag,
-.apache .hljs-cbracket,
-.tex .hljs-command,
-.hljs-prompt,
-.hljs-link_label,
-.hljs-link_url {
-  color: #e6db74;
-}
+article iframe {
+  border: 1px solid #CCC; }
 
-.hljs-comment,
-.hljs-annotation,
-.hljs-decorator,
-.hljs-pi,
-.hljs-doctype,
-.hljs-deletion,
-.hljs-shebang,
-.apache .hljs-sqbracket,
-.tex .hljs-formula {
-  color: #75715e;
-}
+pre .comment,
+pre .title {
+  color: #999999; }
 
-.coffeescript .javascript,
-.javascript .xml,
-.tex .hljs-formula,
-.xml .javascript,
-.xml .vbscript,
-.xml .css,
-.xml .hljs-cdata,
-.xml .php,
-.php .xml {
-  opacity: 0.5;
-}
+pre .variable,
+pre .attribute,
+pre .tag,
+pre .regexp,
+pre .ruby .constant,
+pre .xml .tag .title,
+pre .xml .pi,
+pre .xml .doctype,
+pre .html .doctype,
+pre .css .id,
+pre .css .class,
+pre .css .pseudo {
+  color: #f2777a; }
+
+pre .number,
+pre .preprocessor,
+pre .built_in,
+pre .literal,
+pre .params,
+pre .constant {
+  color: #f99157; }
+
+pre .class,
+pre .ruby .class .title,
+pre .css .rules .attribute {
+  color: #99cc99; }
+
+pre .string,
+pre .value,
+pre .inheritance,
+pre .header,
+pre .ruby .symbol,
+pre .xml .cdata {
+  color: #99cc99; }
+
+pre .css .hexcolor {
+  color: #66cccc; }
+
+pre .function,
+pre .python .decorator,
+pre .python .title,
+pre .ruby .function .title,
+pre .ruby .title .keyword,
+pre .perl .sub,
+pre .javascript .title,
+pre .coffeescript .title {
+  color: #6699cc; }
+
+pre .keyword,
+pre .javascript .function {
+  color: #cc99cc; }

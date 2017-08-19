@@ -1,107 +1,37 @@
-<a id="rocket" href="#top" class="show"></a><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><meta content="telephone=no" name="format-detection"/><meta name="description"/><title>快速上手require.js | 赵彪的博客</title><!--+get_resource("blog_basic.css")--><link rel="stylesheet" type="text/css" href="/css/normalize.css"/><link rel="stylesheet" type="text/css" href="/css/pure-min.css"/><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css"/><link rel="stylesheet" type="text/css" href="/css/highlight.css"/><link rel="stylesheet" type="text/css" href="/css/style.css"/><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"/><link rel="alternate" type="application/atom+xml" href="/atom.xml"/></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">快速上手require.js</h1><a id="logo" href="/">赵彪的博客</a><p class="description">把生命浪费在美好的代码上</p></div><div id="nav-menu"><a href="/" class="current">Home</a><a href="/archives">Archive</a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">快速上手require.js</h1><div class="post-meta">November 23, 2015</div><span data-thread-key="2015/11/23/requirebasic/" class="ds-thread-count"></span><div class="post-content"><p>##requirejs是什么##<br>requriejs是一个js插件，这个插件可以在各种js运行环境里自动、异步加载js文件。<br>更多内容参考:<br><a href="http://requirejs.org/" target="_blank" rel="external">requirejs官网</a><br><a href="https://github.com/jrburke/requirejs" target="_blank" rel="external">requirejs的Git仓库</a></p>
-<p>##关于本文的示例代码##<br>本文中的所有代码都可以在<a href="https://github.com/buildAll/dead-basic-requirejs-demo" target="_blank" rel="external">这里</a>看到或下载。</p>
-<p>##为什么使用requirejs##<br>前端js代码越来越多，如果使用模块化开发，可以降低代码藕合，提高代码的可维护性。而requirejs可以比较好的支持的js模块化开发思想。<br>不过requirejs并不是唯一支持js模块开发的插件，类似功能的插件还有<a href="http://browserify.org/" target="_blank" rel="external">browserify</a>等。</p>
-<p>##如何使用requirejs##</p>
-<p>###下载requirejs###<br>打开<a href="http://requirejs.org/docs/release/2.1.22/comments/require.js" target="_blank" rel="external">链接</a>，复制源码到你的文件里，保存为require.js。</p>
-<p>###建立项目###<br>建立如下的目录结构:</p>
-<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line">app/</span><br><span class="line">  index.html</span><br><span class="line">  js/</span><br><span class="line">    <span class="class"><span class="keyword">lib</span>/</span></span><br><span class="line">       <span class="keyword">require</span>.js   /*<span class="keyword">require</span>.js源码*<span class="regexp">/</span><br><span class="line">       print.js     /</span>*自定义的(库)模块*<span class="regexp">/</span><br><span class="line">    app/</span></span><br><span class="line">       app.js       /*放置应用main方法的文件，名字可以任意起*<span class="regexp">/</span><br><span class="line">       me.js        /</span>*自定义的(应用级)模块，名字可以任意起*<span class="regexp">/</span><br><span class="line">    main.js         /</span>*调用<span class="keyword">require</span>方法的文件，既入口文件，名字可以任意起*<span class="regexp">/</span></span><br></pre></td></tr></table></figure>
-<p>###为页面引入requirejs###<br>index.html代码如下:</p>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;title&gt;requirejs basic &lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;!--
-  src属性指向require.js
-  data-main属性指向main.js，注意1：可以省略.js，注意2:该文件既为调用require方法的文件
-  --&gt;
-  &lt;script src=&apos;js/lib/require.js&apos; data-main=&apos;js/main&apos;&gt;&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><p>这里的script里的写法是固定的，既设置src和data-main属性，分别找到require.js的源码和我们自己页面调用require方法的入口文件。</p>
-<p>###配置及启动requirejs###<br>打开main.js，输入以下代码:</p>
-<pre><code>require.config({
-  //baseUrl为requirejs需要加载的模块的根目录，后面的模块路径都是相对于这个目录的
-  baseUrl: &apos;./js&apos;,
-  paths: {
-  //模块名: .js文件相对于baseUrl的路径
-    me: &apos;app/me&apos;,
-    print: &apos;lib/print&apos;,
-    myApp: &apos;app/app&apos;
-  }
-})
-
-//启动myApp模块，既运行js/app/app.js
-require([&apos;myApp&apos;]);
-</code></pre><p>可以看到，首先调用了require.config()去进行一些配置，这里主要配置了baseUrl和paths。<br>baseUrl可以看成所有模块的根目录。<br>paths中定义了各个模块(既各个.js文件)相对于baseUrl的路径。paths对象的格式是{模块名: .js文件相对于baseUrl的路径}。</p>
+<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>快速上手require.js | 赵彪的博客</title><link rel="stylesheet" type="text/css" href="/css/normalize.css"><link rel="stylesheet" type="text/css" href="/css/highlight.css"><link rel="stylesheet" type="text/css" href="/css/very-simple.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"></head><body><!-- include the sidebar--><!-- include ./includes/sidebar.jade--><!-- Blog title and subtitle--><header><div class="container header"><a id="logo" href="/." class="title">赵彪的博客</a><span class="subtitle">把生命浪费在美好的代码上</span><label id="toggle-menu" for="menu" onclick><i class="fa fa-bars"></i></label></div></header><!-- use checkbox hack for toggle nav-bar on small screens--><input id="menu" type="checkbox"><!-- Navigation Links--><nav id="nav"><div class="container"><a href="/" class="sidebar-nav-item active">Home</a><a href="/archives" class="sidebar-nav-item">Archives</a></div></nav><div id="header-margin-bar"></div><!-- gallery that comes before the header--><div class="wrapper"><div class="container post-header"><h1>快速上手require.js</h1></div></div><div class="wrapper"><div class="container meta"><div class="post-time">2015-11-23</div><div class="post-categories"><a class="post-category-link" href="/categories/开发工具/">开发工具</a></div><div class="post-tags"><a class="post-tag-link" href="/tags/requirejs/">requirejs</a></div></div></div><article><div class="container post"><h2 id="requirejs是什么"><a href="#requirejs是什么" class="headerlink" title="requirejs是什么"></a>requirejs是什么</h2><p>requriejs是一个js插件，这个插件可以在各种js运行环境里自动、异步加载js文件。<br>更多内容参考:<br><a href="http://requirejs.org/" target="_blank" rel="external">requirejs官网</a><br><a href="https://github.com/jrburke/requirejs" target="_blank" rel="external">requirejs的Git仓库</a></p>
+<h2 id="关于本文的示例代码"><a href="#关于本文的示例代码" class="headerlink" title="关于本文的示例代码"></a>关于本文的示例代码</h2><p>本文中的所有代码都可以在<a href="https://github.com/buildAll/dead-basic-requirejs-demo" target="_blank" rel="external">这里</a>看到或下载。</p>
+<h2 id="为什么使用requirejs"><a href="#为什么使用requirejs" class="headerlink" title="为什么使用requirejs"></a>为什么使用requirejs</h2><p>前端js代码越来越多，如果使用模块化开发，可以降低代码藕合，提高代码的可维护性。而requirejs可以比较好的支持的js模块化开发思想。<br>不过requirejs并不是唯一支持js模块开发的插件，类似功能的插件还有<a href="http://browserify.org/" target="_blank" rel="external">browserify</a>等。</p>
+<h2 id="如何使用requirejs"><a href="#如何使用requirejs" class="headerlink" title="如何使用requirejs"></a>如何使用requirejs</h2><h3 id="下载requirejs"><a href="#下载requirejs" class="headerlink" title="下载requirejs"></a>下载requirejs</h3><p>打开<a href="http://requirejs.org/docs/release/2.1.22/comments/require.js" target="_blank" rel="external">链接</a>，复制源码到你的文件里，保存为require.js。</p>
+<h3 id="建立项目"><a href="#建立项目" class="headerlink" title="建立项目"></a>建立项目</h3><p>建立如下的目录结构:</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">app/&#10;  index.html&#10;  js/&#10;    lib/&#10;       require.js   /*require.js&#28304;&#30721;*/&#10;       print.js     /*&#33258;&#23450;&#20041;&#30340;(&#24211;)&#27169;&#22359;*/&#10;    app/&#10;       app.js       /*&#25918;&#32622;&#24212;&#29992;main&#26041;&#27861;&#30340;&#25991;&#20214;&#65292;&#21517;&#23383;&#21487;&#20197;&#20219;&#24847;&#36215;*/&#10;       me.js        /*&#33258;&#23450;&#20041;&#30340;(&#24212;&#29992;&#32423;)&#27169;&#22359;&#65292;&#21517;&#23383;&#21487;&#20197;&#20219;&#24847;&#36215;*/&#10;    main.js         /*&#35843;&#29992;require&#26041;&#27861;&#30340;&#25991;&#20214;&#65292;&#26082;&#20837;&#21475;&#25991;&#20214;&#65292;&#21517;&#23383;&#21487;&#20197;&#20219;&#24847;&#36215;*/</span><br></pre></td></tr></table></figure>
+<h3 id="为页面引入requirejs"><a href="#为页面引入requirejs" class="headerlink" title="为页面引入requirejs"></a>为页面引入requirejs</h3><p>index.html代码如下:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="doctype">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">html</span> <span class="attribute">lang</span>=<span class="value">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">title</span>&gt;</span>requirejs basic <span class="tag">&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--</span><br><span class="line">  src属性指向require.js</span><br><span class="line">  data-main属性指向main.js，注意1：可以省略.js，注意2:该文件既为调用require方法的文件</span><br><span class="line">  --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">'js/lib/require.js'</span> <span class="attribute">data-main</span>=<span class="value">'js/main'</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里的script里的写法是固定的，既设置src和data-main属性，分别找到require.js的源码和我们自己页面调用require方法的入口文件。</p>
+<h3 id="配置及启动requirejs"><a href="#配置及启动requirejs" class="headerlink" title="配置及启动requirejs"></a>配置及启动requirejs</h3><p>打开main.js，输入以下代码:<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">require</span>.config(&#123;</span><br><span class="line">  <span class="comment">//baseUrl为requirejs需要加载的模块的根目录，后面的模块路径都是相对于这个目录的</span></span><br><span class="line">  baseUrl: <span class="string">'./js'</span>,</span><br><span class="line">  paths: &#123;</span><br><span class="line">  <span class="comment">//模块名: .js文件相对于baseUrl的路径</span></span><br><span class="line">    me: <span class="string">'app/me'</span>,</span><br><span class="line">    print: <span class="string">'lib/print'</span>,</span><br><span class="line">    myApp: <span class="string">'app/app'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//启动myApp模块，既运行js/app/app.js</span></span><br><span class="line"><span class="built_in">require</span>([<span class="string">'myApp'</span>]);</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，首先调用了require.config()去进行一些配置，这里主要配置了baseUrl和paths。<br>baseUrl可以看成所有模块的根目录。<br>paths中定义了各个模块(既各个.js文件)相对于baseUrl的路径。paths对象的格式是{模块名: .js文件相对于baseUrl的路径}。</p>
 <p>其实可以认为所谓的模块化就是在这里发生的。既paths里通过模块名，关联到了对应的js文件。通过这种形式将js文件”设定”成了模块。</p>
-<p>###定义模块###<br>看一下requirejs里怎么定义模块。打开me.js，定一个me模块：</p>
-<pre><code>define(function(){
-   var myName = &apos;Bill&apos;;
-   var myJob = &apos;front-end developer&apos;;
-   var mySalary = &apos;what?&apos;;
-   var myTarget = &apos;become a successful developer&apos;;
-
-   return {
-     getName: function() {
-       return myName;
-     },
-     getJob: function() {
-       return myJob;
-     },
-     getSalary: function() {
-       return &apos;salary is confidential&apos;;
-     },
-     getTarget: function() {
-       return myTarget;
-     }
-   }
-});
-</code></pre><p>就是这么简单，调用define()方法就可以定义模块了(实际上define的英文意思就是“定义“)。向该方法传入一个匿名函数，然后在函数最后返回模块的公共接口。</p>
-<p>同样的，我们再定一个print模块。打开print.js，定义一个模块print。输入以下代码：</p>
-<pre><code>define(function() {
-  return function print(msg) {
-    window.console.log &amp;&amp; console.log(msg);
-  };
-});
-</code></pre><p>###使用模块###<br>模块定义好了，怎么在其他模块中使用呢?</p>
-<p>打开app.js，输入</p>
-<pre><code>//[&apos;me&apos;,&apos;print&apos;]对应require.config()方法传入参数的me和print属性。
-define([&apos;me&apos;, &apos;print&apos;], function(me, print) {
-  print(me.getTarget());
-});
-</code></pre><p>可以看到，这个名为app的模块和之前的模块不同，这个模块在调用define方法时传入了两个参数:</p>
+<h3 id="定义模块"><a href="#定义模块" class="headerlink" title="定义模块"></a>定义模块</h3><p>看一下requirejs里怎么定义模块。打开me.js，定一个me模块：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">var</span> myName = <span class="string">'Bill'</span>;</span><br><span class="line">   <span class="keyword">var</span> myJob = <span class="string">'front-end developer'</span>;</span><br><span class="line">   <span class="keyword">var</span> mySalary = <span class="string">'what?'</span>;</span><br><span class="line">   <span class="keyword">var</span> myTarget = <span class="string">'become a successful developer'</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> &#123;</span><br><span class="line">     getName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> myName;</span><br><span class="line">     &#125;,</span><br><span class="line">     getJob: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> myJob;</span><br><span class="line">     &#125;,</span><br><span class="line">     getSalary: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="string">'salary is confidential'</span>;</span><br><span class="line">     &#125;,</span><br><span class="line">     getTarget: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> myTarget;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>就是这么简单，调用define()方法就可以定义模块了(实际上define的英文意思就是“定义“)。向该方法传入一个匿名函数，然后在函数最后返回模块的公共接口。</p>
+<p>同样的，我们再定一个print模块。打开print.js，定义一个模块print。输入以下代码：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">print</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">window</span>.console.log &amp;&amp; <span class="built_in">console</span>.log(msg);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用模块"><a href="#使用模块" class="headerlink" title="使用模块"></a>使用模块</h3><p>模块定义好了，怎么在其他模块中使用呢?</p>
+<p>打开app.js，输入<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//['me','print']对应require.config()方法传入参数的me和print属性。</span></span><br><span class="line">define([<span class="string">'me'</span>, <span class="string">'print'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">me, print</span>) </span>&#123;</span><br><span class="line">  print(me.getTarget());</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，这个名为app的模块和之前的模块不同，这个模块在调用define方法时传入了两个参数:</p>
 <ul>
 <li>第一个参数是一个数组，在这里是[‘me’, ‘print’]。其中’me’，’print’是require.config()传入的参数中定义的模块名。</li>
 <li>第二个参数是一个匿名函数，这个函数的参数和前面数组里的模块名一一对应。</li>
 </ul>
-<p>###测试代码###<br>现在，用浏览器打开index.html，调出控制台面板(F12或者option+command+i)，就可以在控制台里看到’become a successful developer’这句话了。</p>
-<p>##总结##<br>使用requirejs的步骤:</p>
+<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><p>现在，用浏览器打开index.html，调出控制台面板(F12或者option+command+i)，就可以在控制台里看到’become a successful developer’这句话了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>使用requirejs的步骤:</p>
 <ol>
-<li>在页面中的script标签里设置src属性和data-main属性。其中src对应require.js的路径，data-main属性对应入口文件路径，既本文示例中的main.js文件路径。</li>
-<li>在main.js中通过require.confing()配置模块名和模块对应的.js文件路径。</li>
-<li>在main.js中通过require()方法，调用页面的主函数(主模块)，在本文的示例代码中是名为myApp的模块(对应app.js文件)。</li>
-<li>通过define()方法定义模块。</li>
+<li><strong>在页面中的script标签里设置src属性和data-main属性。其中src对应require.js的路径，data-main属性对应入口文件路径，既本文示例中的main.js文件路径。</strong></li>
+<li><strong>在main.js中通过require.confing()配置模块名和模块对应的.js文件路径。</strong></li>
+<li><strong>在main.js中通过require()方法，调用页面的主函数(主模块)，在本文的示例代码中是名为myApp的模块(对应app.js文件)。</strong></li>
+<li><strong>通过define()方法定义模块。</strong></li>
 </ol>
 <p>可以看出requirejs的核心思想，就是把一个个单独的js文件“设定成”模块。然后各个模块间再通过向define()传入模块名，来互相引用。</p>
 <p>本文只介绍了requirejs的一般使用方法，按照本文的做法已经可以在项目中去使用requirejs了。更详细的内容还请参阅<a href="http://requirejs.org/" target="_blank" rel="external">requirejs官方网站</a>。</p>
-<p><strong>赵彪原创，转载请注明出处</strong></p>
-</div><div class="tags"><a href="/tags/requirejs/">requirejs</a></div><div class="categories">Categorized in<a href="/categories/开发工具/">开发工具</a></div><div class="page-navigator"><a href="/2015/12/09/frontendvim/" class="pre">Previous</a><a href="/2015/11/21/checkarray/" class="next">Next</a></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><div class="widget-title">Categories</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a></li></ul></div><div class="widget"><div class="widget-title">Tags</div><div class="tagcloud"><a href="/tags/sass/" style="font-size: 15px;">sass</a> <a href="/tags/GitHub/" style="font-size: 15px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/requirejs/" style="font-size: 15px;">requirejs</a> <a href="/tags/JavaScript代码规范-JS代码规范-前端代码规范-js代码规范/" style="font-size: 15px;">JavaScript代码规范 JS代码规范 前端代码规范 js代码规范</a> <a href="/tags/JS继承/" style="font-size: 15px;">JS继承</a> <a href="/tags/vim-front-end-tool/" style="font-size: 15px;">vim, front-end tool</a></div></div><div class="widget"><div class="widget-title">Recent</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/08/12/js-standard/">用standard来管理JavaScript代码规范</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/scopeandclosure/">作用域和闭包--读《你不知道的JavaScript》</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/frontendvim/">现在开始用vim开发Web前端吧</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/requirebasic/">快速上手require.js</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/21/checkarray/">How to Check If it is Array?</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/16/basesass/">用于生成基础样式的base.sass文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/inheritance/">用代码说明JavaScript里的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/23/手动给你的GitHub项目设置一个主页/">手动给你的GitHub项目设置一个主页</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/22/oldBlog/">旧博客地址</a></li></ul></div><div class="widget"></div></div></div></div><script src="/js/highlight.pack.js" type="text/javascript"></script><script>hljs.initHighlightingOnLoad();
-</script><div id="footer">© <a href="/" real="nofollow">赵彪的博客. </a>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io">Hexo.</a>Theme by<a rel="nofollow" target="_blank" href="https://chopstack.com">Cho</a></div></div></body><script src="/js/jquery.min.js" type="text/javascript"></script>
-<script src="/js/totop.js" type="text/javascript"></script><script src="/js/fancybox.pack.js" type="text/javascript"></script><link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css"><script>$(document).ready(function() {
-  $("img").wrap(function() {
-    if ($(this).hasClass('nofancybox')) return;
-    return '<a href="' + $(this).attr("src") + '" rel="group" />'});
-});</script><script>$(document).ready(function() {
-  $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif']").attr('rel', 'gallery').fancybox({
-   helpers : {
-   title: { type: 'inside'}
-   },
-   afterLoad: function(){
-   this.title = this.title + ' ' + $(this.element).find('img').attr('alt');
-   }
- });
+<p><em>赵彪原创，转载请注明出处</em></p>
+</div><!-- comment system--><div class="container"><hr></div></article><footer id="footer"><div class="container"><div class="bar"><div class="social"><a href="/atom.xml" target="_blank"><i class="fa fa-rss"></i></a></div><div class="footer">© 2017 <a href="/" rel="nofollow">Zhao Biao</a>. Powered by <a rel="nofollow" target="_blank" href="https://hexo.io">Hexo</a>. Theme <a target="_blank" href="https://github.com/lotabout/very-simple">very-simple</a>.</div></div></div></footer><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.css"><script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script><script src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script><script>$(document).ready(function() {
+    $(".fancybox").fancybox();
 });
-</script></html>
+</script></body></html>
